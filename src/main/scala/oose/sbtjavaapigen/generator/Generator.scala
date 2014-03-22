@@ -4,18 +4,20 @@ import java.lang.reflect._
 import scalaz._
 import Scalaz._
 import Helper._
+import java.net.URLClassLoader
+import java.io.File
 
 object Generator {
 
   import Extractors._
   import Writer._
   import scala.util._
-  
+
   type ErrorWriter[A] = Writer[List[String], A]
 
-  private def obtainClazz(className: String) : ErrorWriter[Option[JavaClass]] = {
+  private def obtainClazz(className: String, classLoader : ClassLoader): ErrorWriter[Option[JavaClass]] = {
     Try {
-      JavaClass(Class.forName(className))
+      JavaClass(classLoader.loadClass(className))
     } toOption match {
       case result @ Some(_) => result.set(List.empty)
       case fail @ None =>
@@ -23,10 +25,13 @@ object Generator {
     }
   }
 
-  def apply(classes: Set[String]) = {
-     val writerResult = (classes map obtainClazz).toList.sequenceU
-     val output = writerResult.value.flatten.groupBy{ _.classPackage }.write
-     (writerResult.written, output)
+  def apply(classpath: Seq[File], classes: Set[String]) = {
+    val classloader = this.getClass().getClassLoader()
+    val urls = classpath.map { _.toURL() }.toArray
+    val urlClassLoader = new URLClassLoader(urls, classloader)
+    val writerResult = (classes.map{ name => obtainClazz(name, urlClassLoader)}).toList.sequenceU
+    val output = writerResult.value.flatten.groupBy { _.classPackage }.write
+    (writerResult.written, output)
   }
 }
 
