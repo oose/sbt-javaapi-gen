@@ -76,7 +76,7 @@ Caveats
 =======
 
 * Currently the plugin cannot access the project classpath! That implies that you have to include your java dependencies in the project plugin classpath!!!
-* The structure of the implicit classes is hardcoded. If you source class is in "x.y.z" the plugin will generate "x.y.z.api".
+* The structure of the implicit classes is hardcoded. If your source class is in "x.y.z.MyClass" the plugin will generate "x.y.z.api.ScalaMyClass", where api is an object containing the implicit class.
 * Error detection is meagre. Things may and will fail!
 * The code is regenerated each time the project is compiled.
 
