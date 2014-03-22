@@ -3,7 +3,8 @@ sbt-javaapi-gen
 
 An sbt plugin to create implicit scala classes to invoke java apis in a more natural scala way.
 
-> This plugin is in an absolute BETA releases state
+> This plugin is in an absolute BETA release state
+> The API and settings are still subject to change
 
 Usage
 =====
@@ -12,7 +13,7 @@ Add the plugin to your `projects/plugins.sbt` file:
 
     resolvers += "oose releases" at "http://oose.github.io/m2/releases"
     
-    addSbtPlugin("oose" % "sbt-javaapi-gen" % "0.1")
+    addSbtPlugin("oose" % "sbt-javaapi-gen" % "0.2")
 
 In your `build.sbt` file or any other `.sbt` file define a set of java classes (not source) which will be inspected by the plugin. For example:
 
@@ -33,12 +34,12 @@ In your `build.sbt` file or any other `.sbt` file define a set of java classes (
 
 The sbt setting `javaapiclasses` expects a set of strings of fully qualified java classes. The function `wrapInPackage` is just a convenience if you have many classes from the same package.
 
-After that you are done and can call `compile`. The plugin hooks into the compile process and will generate sources for you. As an alternative you can also call `javaapi` from sbt.
+After that you are done and can call `compile`. The plugin hooks into the compile process and will generate sources for you. As an alternative you can also call `javaapi` from sbt. Calling `clean` will also delete the generated files.
 
 What it does
 ============
 
-The plugin tries to find getters and setters in classes or interfaces of java classes and translates them into an idiomatic scala style. These setters and getters are wrapped in an implicit class allowing the programmer to void calling chains of x.getFoo() or setThat(newValue). Instead we can write `x.foo` or `x.foo = newValue`.
+The plugin tries to find getters and setters in classes or interfaces of java classes and translates them into an idiomatic scala style. These setters and getters are wrapped in an implicit class allowing the programmer to avoid calling chains of x.getFoo() or setThat(newValue). Instead we can write `x.foo` or `x.foo = newValue`.
 
 For example this a an sample output (abbreviated):
 
@@ -75,7 +76,6 @@ The plugin will also take care of required imports.
 Caveats
 =======
 
-* Currently the plugin cannot access the project classpath! That implies that you have to include your java dependencies in the project plugin classpath!!!
 * The structure of the implicit classes is hardcoded. If your source class is in "x.y.z.MyClass" the plugin will generate "x.y.z.api.ScalaMyClass", where api is an object containing the implicit class.
 * Error detection is meagre. Things may and will fail!
 * The code is regenerated each time the project is compiled.

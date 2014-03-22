@@ -2,7 +2,7 @@ name := "sbt-javaapi-gen"
 
 organization := "oose"
 
-version := "0.2-SNAPSHOT"
+version := "0.2"
 
 libraryDependencies ++= Seq(
   "org.scalaz" %% "scalaz-core" % "7.0.6"
