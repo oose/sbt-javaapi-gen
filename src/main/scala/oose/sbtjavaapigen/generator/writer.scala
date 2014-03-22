@@ -52,7 +52,7 @@ object Writer {
     }
   }
 
-  implicit class PackageWriter(result: Map[ClassPackage, Set[JavaClass]]) {
+  implicit class PackageWriter(result: Map[ClassPackage, List[JavaClass]]) {
     private def writePackage(content: Set[JavaClass])(tabulator: Int = 1): ImportWriter[String] = {
       val tabStr = tab(tabulator)
 
@@ -64,7 +64,7 @@ object Writer {
     def write() = {
       result.map {
         case (pack, content) =>
-          val writtenPackage = writePackage(content)(tabulator = 1)
+          val writtenPackage = writePackage(content.toSet)(tabulator = 1)
           val importsNames = (for {
             p <- writtenPackage.written
             name <- p.name if !(name.startsWith("java.lang") || name.startsWith("sun."))
