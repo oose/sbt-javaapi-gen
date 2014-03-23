@@ -47,6 +47,11 @@ Currently the following methods are transformed:
 * setter with a single parameter.
 * boolean getter of the type isSomething().
 
+The following methods are ignored:
+
+* non public methods
+* static methods
+
 The return types of getters are always inferred, so that no type mismatch can happen. If parameter types are complex, the plugin might still produce wrong output. Please file an issue if that happens.
 
 For example this a an sample output (abbreviated):

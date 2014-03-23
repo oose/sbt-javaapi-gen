@@ -56,6 +56,8 @@ case class JavaType(t: Type) {
  */
 case class JavaMethod(method: Method) {
   lazy val name = method.getName()
+  lazy val isStatic = Modifier.isStatic(method.getModifiers())
+  lazy val isPublic = Modifier.isPublic(method.getModifiers())
   lazy val params = method.getGenericParameterTypes().map(t => JavaType(t))
   lazy val paramCount = params.length
   lazy val returnType = JavaType(method.getGenericReturnType())

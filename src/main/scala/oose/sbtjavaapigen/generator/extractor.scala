@@ -11,7 +11,14 @@ object Extractors {
   }
 
   object MethodEx {
-    def unapply(jm: JavaMethod) = (jm.name, jm.params, jm.paramCount, jm.returnType).some
+    def unapply(jm: JavaMethod) = (jm.name, jm.isStatic, jm.isPublic, jm.params, jm.paramCount, jm.returnType).some
+  }
+
+  object PublicNonStaticMethod {
+    def unapply(jm: JavaMethod) = jm match {
+      case MethodEx(name, false, true, params, paramCount, returnType) => (name, params, paramCount, returnType).some
+      case _ => None
+    }
   }
 
   object Getter {

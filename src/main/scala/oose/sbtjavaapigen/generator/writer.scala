@@ -15,8 +15,9 @@ object Writer {
     def write(tabulator: Int = 0): ImportWriter[Option[String]] = {
       val tabStr = tab(tabulator)
 
+      // only generate for non static, public methods
       method match {
-        case MethodEx(name, params, 0, returnType) =>
+        case PublicNonStaticMethod(name, params, 0, returnType) =>
           method match {
             case Getter(_, scalaName) =>
               s"${tabStr}def ${scalaName} = java.${name}()".some.set(NoImport)
@@ -24,7 +25,7 @@ object Writer {
               s"${tabStr}def ${scalaName} = java.${name}()".some.set(NoImport)
             case _ => None.set(List.empty)
           }
-        case MethodEx(name, params, 1, returnType) =>
+        case PublicNonStaticMethod(name, params, 1, returnType) =>
           method match {
             case Setter(_, scalaName) =>
               val p = params.head
