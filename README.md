@@ -13,7 +13,7 @@ Add the plugin to your `projects/plugins.sbt` file:
 
     resolvers += "oose releases" at "http://oose.github.io/m2/releases"
     
-    addSbtPlugin("oose" % "sbt-javaapi-gen" % "0.2")
+    addSbtPlugin("oose" % "sbt-javaapi-gen" % "0.3")
 
 In your `build.sbt` file or any other `.sbt` file define a set of java classes (not source) which will be inspected by the plugin. For example:
 
