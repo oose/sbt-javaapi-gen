@@ -41,6 +41,14 @@ What it does
 
 The plugin tries to find getters and setters in classes or interfaces of java classes and translates them into an idiomatic scala style. These setters and getters are wrapped in an implicit class allowing the programmer to avoid calling chains of x.getFoo() or setThat(newValue). Instead we can write `x.foo` or `x.foo = newValue`.
 
+Currently the following methods are transformed:
+
+* getter with no parameter.
+* setter with a single parameter.
+* boolean getter of the type isSomething().
+
+The return types of getters are always inferred, so that no type mismatch can happen. If parameter types are complex, the plugin might still produce wrong output. Please file an issue if that happens.
+
 For example this a an sample output (abbreviated):
 
     implicit class ScalaTask(val java : Task) {
