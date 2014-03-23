@@ -1,17 +1,17 @@
 package oose.sbtjavaapigen.generator
 
-import java.lang.reflect._
+import java.io.File
+import java.net.URLClassLoader
+
+import scala.util._
+
 import scalaz._
 import Scalaz._
-import Helper._
-import java.net.URLClassLoader
-import java.io.File
+
+import Writer._
+import Extractors._
 
 object Generator {
-
-  import Extractors._
-  import Writer._
-  import scala.util._
 
   type ErrorWriter[A] = Writer[List[String], A]
 

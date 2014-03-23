@@ -1,12 +1,16 @@
 package oose.sbtjavaapigen.generator
 
-object Writer {
-  import Extractors._
-  import JavaMethod._
-  import Helper._
-  import scalaz._
-  import Scalaz._
+import scalaz._
+import Scalaz._
 
+import Extractors._
+import Helper._
+import JavaMethod._
+
+import oose.sbtjavaapigen.generator.Helper.ImportWriter
+
+object Writer {
+  
   implicit class MethodWriter(method: JavaMethod) {
     def write(tabulator: Int = 0): ImportWriter[Option[String]] = {
       val tabStr = tab(tabulator)

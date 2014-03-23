@@ -1,6 +1,7 @@
 package oose.sbtjavaapigen.generator
-import scalaz._
-import syntax.std.option._
+
+import scalaz.syntax.std.option._
+
 import Helper._
 
 object Extractors {

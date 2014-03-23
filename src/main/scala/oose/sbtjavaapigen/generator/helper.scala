@@ -1,8 +1,9 @@
 package oose.sbtjavaapigen.generator
 
-object Helper {
-  import scalaz._
+import scalaz._
 
+object Helper {
+  
   /**
    *  Define a Writer to store required Imports
    */
