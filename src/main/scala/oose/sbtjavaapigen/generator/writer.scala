@@ -7,7 +7,7 @@ import Extractors._
 import Helper._
 import JavaMethod._
 
-import oose.sbtjavaapigen.generator.Helper.ImportWriter
+import oose.sbtjavaapigen.generator.Helper._
 
 object Writer {
   
@@ -44,9 +44,10 @@ object Writer {
   implicit class ClassWriter(clazz: JavaClass) {
     def write(tabulator: Int = 0): ImportWriter[Option[String]] = {
       val tabStr = tab(tabulator)
-      val methodWriter = clazz.methods.map(m => m.write(tabulator + 1)).sequenceU
+      val clazzPackage = clazz.classPackage
+      val methodWriter = ((clazz.methods.map(m => m.write(tabulator + 1)).sequenceU)) :++> List(clazzPackage)
       val methodStrings = methodWriter.value.flatten.mkString("\n")
-
+ 
       (if (!methodStrings.isEmpty) {
         s"""|${tabStr}implicit class Scala${clazz.name}(val java : ${clazz.name}) {
     	  |${methodStrings}
@@ -70,12 +71,12 @@ object Writer {
       result.map {
         case (pack, content) =>
           val writtenPackage = writePackage(content.toSet)(tabulator = 1)
-          val importsNames = (for {
+          val importsNames = (for { 
             p <- writtenPackage.written
-            name <- p.name if !(name.startsWith("java.lang") || name.startsWith("sun."))
+            name <- p.realName 
           } yield name).toSet
 
-          pack.name match {
+          pack.scalaName match {
             case Some(packageName) =>
               s"""|package ${packageName} {
         	    |

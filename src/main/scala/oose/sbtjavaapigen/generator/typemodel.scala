@@ -20,7 +20,8 @@ case class JavaClass(clazz: Class[_]) {
 
 /** Represents a package. */
 case class ClassPackage(p: Package) {
-  lazy val name = Option(p).map(p => p.getName())
+  lazy val realName = Option(p).map(p => p.getName())
+  lazy val scalaName = realName map {name => if (name.startsWith("java.")) "gen" + name else name}
 }
 
 /** Represents some Type. */

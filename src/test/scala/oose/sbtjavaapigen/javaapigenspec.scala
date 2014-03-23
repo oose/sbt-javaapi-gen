@@ -22,7 +22,11 @@ class JavaApiGenSpec extends SpecificationWithJUnit {
     }
 
     "create the correct package" in {
-      output must contain("package java.io")
+      output must contain("package genjava.io")
+    }
+    
+    "import java.io" in {
+      output must contain("import java.io")
     }
 
     "contain an api object" in {
@@ -48,7 +52,22 @@ class JavaApiGenSpec extends SpecificationWithJUnit {
       output must not contain ("def packages")
     }
   }
-  
+
+  "The API Generator for java.lang.Thread" should {
+    val io = Set(
+      "Thread") map wrapInPackage("java.lang")
+    val (warnings, output) = Generator(Seq.empty,
+      io)
+
+    "import java.lang" in {
+      output must contain("import java.lang")
+    }
+
+    "create package genjava.lang" in {
+      output must contain("package genjava.lang")
+    }
+  }
+
   "The API Generator for java.lang.Class" should {
     val io = Set(
       "Class") map wrapInPackage("java.lang")
