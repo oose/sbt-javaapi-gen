@@ -1,7 +1,6 @@
 package oose.sbtjavaapigen
 
 import sbt._
-import sbt.IO
 import Keys._
 import oose.sbtjavaapigen.generator._
 
@@ -32,29 +31,37 @@ object JavaApi extends Plugin {
   /**
    * Setting for the generator task.
    */
-  lazy val javaapi =
-    taskKey[Seq[File]]("Generates a set of implicit classes to access java classes")
+  lazy val javaApi =
+    taskKey[Seq[File]]("Generates a set of implicit classes to access java classes.")
+    
+  lazy val javaApiOutput = 
+    settingKey[String]("Sets the location and name of the file.")
 
   /**
    * Settings for the set of classes to be transformed to implicit classes.
    */
-  lazy val javaapiclasses = settingKey[Set[String]]("Classes to generate")
+  lazy val javaApiClasses = settingKey[Set[String]]("Classes to generate.")
 
-  lazy val javaapiTask =
+  lazy val javaApiTask =
     (externalDependencyClasspath in Compile,
       streams,
       (sourceManaged in Compile),
-      javaapiclasses) map {
-        (fc, s, output, jac) =>
+      javaApiOutput,
+      javaApiClasses) map {
+        (fc, s, output, output2, jac) =>
           val classPath = fc.files
-          invokeGenerator(fc.files, s.log, output / "scala" / "api.scala", jac)
+          val outputLocation = output / output2
+          val result = invokeGenerator(fc.files, s.log, outputLocation, jac)
+          s.log.info(s"Wrote result to ${outputLocation}")
+          result
       }
 
   /**
    * Provide default settings.
    */
   override val settings = Seq(
-    sourceGenerators in Compile <+= (javaapi in Compile),
-    javaapiclasses := Set.empty,
-    javaapi <<= javaapiTask)
+    sourceGenerators in Compile <+= (javaApi in Compile),
+    javaApiClasses := Set.empty,
+    javaApiOutput := "scala/api.scala",
+    javaApi <<= javaApiTask)
 }

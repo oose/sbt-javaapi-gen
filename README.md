@@ -19,7 +19,7 @@ In your `build.sbt` file or any other `.sbt` file define a set of java classes (
 
     def wrapInPackage(packageName: String)(c: String) = packageName + "." + c
     
-    javaapiclasses ++=  Set(
+    javaApiClasses ++=  Set(
       "EngineServices",
       "FormService",
       "HistoryService",
@@ -32,9 +32,9 @@ In your `build.sbt` file or any other `.sbt` file define a set of java classes (
       "RuntimeService",
       "TaskService") map wrapInPackage("org.activiti.engine")
 
-The sbt setting `javaapiclasses` expects a set of strings of fully qualified java classes. The function `wrapInPackage` is just a convenience if you have many classes from the same package.
+The sbt setting `javaApiClasses` expects a set of strings of fully qualified java classes. The function `wrapInPackage` is just a convenience if you have many classes from the same package.
 
-After that you are done and can call `compile`. The plugin hooks into the compile process and will generate sources for you. As an alternative you can also call `javaapi` from sbt. Calling `clean` will also delete the generated files.
+After that you are done and can call `compile`. The plugin hooks into the compile process and will generate sources for you. As an alternative you can also call `javaApi` from sbt. Calling `clean` will also delete the generated files.
 
 What it does
 ============

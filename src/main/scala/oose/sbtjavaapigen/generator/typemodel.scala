@@ -1,5 +1,7 @@
 package oose.sbtjavaapigen.generator
 
+import scala.language.existentials
+
 import java.lang.reflect._
 import Helper._
 
