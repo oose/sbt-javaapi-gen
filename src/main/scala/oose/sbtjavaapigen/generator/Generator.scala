@@ -26,9 +26,9 @@ object Generator {
   }
 
   def apply(classpath: Seq[File], classes: Set[String]) = {
-    val classloader = this.getClass().getClassLoader()
+    val parentClassloader = this.getClass().getClassLoader()
     val urls = classpath.map { _.toURL() }.toArray
-    val urlClassLoader = new URLClassLoader(urls, classloader)
+    val urlClassLoader = new URLClassLoader(urls, parentClassloader)
     val writerResult = (classes.map{ name => obtainClazz(name, urlClassLoader)}).toList.sequenceU
     val output = writerResult.value.flatten.groupBy { _.classPackage }.write
     (writerResult.written, output)
