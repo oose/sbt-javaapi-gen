@@ -29,6 +29,7 @@ object Helper {
       else if (m.length == 0) ""
       else {
         m match {
+          case "Class" => "Class"
           case "Type" => "Type"
           case "Sealed" => "Sealed"
           case "Yield" => "Yield"

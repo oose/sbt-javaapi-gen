@@ -33,6 +33,10 @@ class  JavaApiGenSpec extends SpecificationWithJUnit {
     "create the correct class" in {
       output must contain("implicit class ScalaFile")
     }
+    
+    "treats getClass correctly" in {
+      output must contain("def Class =")
+    }
   }
   
 }
