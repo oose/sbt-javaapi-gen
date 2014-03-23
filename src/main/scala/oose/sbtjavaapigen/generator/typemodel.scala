@@ -10,6 +10,8 @@ case class JavaClass(clazz: Class[_]) {
   lazy val name = clazz.getSimpleName()
   lazy val fullName = clazz.getName()
   lazy val classPackage = ClassPackage(clazz.getPackage())
+  lazy val typeParameters = clazz.getTypeParameters()
+  lazy val hasTypeParameters = typeParameters.size > 0
   lazy val methods = clazz.getMethods().map(m => JavaMethod(m)).toList
   lazy val methodCount = methods.length
 }

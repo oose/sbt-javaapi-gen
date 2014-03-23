@@ -15,11 +15,15 @@ object Generator {
 
   type ErrorWriter[A] = Writer[List[String], A]
 
-  private def obtainClazz(className: String, classLoader : ClassLoader): ErrorWriter[Option[JavaClass]] = {
+  private def obtainClazz(className: String, classLoader: ClassLoader): ErrorWriter[Option[JavaClass]] = {
     Try {
       JavaClass(classLoader.loadClass(className))
     } toOption match {
-      case result @ Some(_) => result.set(List.empty)
+      case result @ Some(jc) =>
+        if (jc.hasTypeParameters)
+          None.set(List(s"$className has type parameters. Can't deal with that yet."))
+        else
+          result.set(List.empty)
       case fail @ None =>
         fail.set(List(s"$className not found"))
     }
@@ -29,7 +33,7 @@ object Generator {
     val parentClassloader = this.getClass().getClassLoader()
     val urls = classpath.map { _.toURL() }.toArray
     val urlClassLoader = new URLClassLoader(urls, parentClassloader)
-    val writerResult = (classes.map{ name => obtainClazz(name, urlClassLoader)}).toList.sequenceU
+    val writerResult = (classes.map { name => obtainClazz(name, urlClassLoader) }).toList.sequenceU
     val output = writerResult.value.flatten.groupBy { _.classPackage }.write
     (writerResult.written, output)
   }

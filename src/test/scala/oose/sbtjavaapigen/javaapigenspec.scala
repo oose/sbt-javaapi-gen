@@ -48,5 +48,17 @@ class JavaApiGenSpec extends SpecificationWithJUnit {
       output must not contain ("def packages")
     }
   }
+  
+  "The API Generator for java.lang.Class" should {
+    val io = Set(
+      "Class") map wrapInPackage("java.lang")
+    val (warnings, output) = Generator(Seq.empty,
+      io)
+
+    "ignore that class because it has type parameters" in {
+      //warnings must not beEmpty
+      warnings(0) must contain("Class has type parameters.")
+    }
+  }
 
 }
