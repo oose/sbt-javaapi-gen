@@ -11,12 +11,15 @@ Usage
 
 Add the plugin to your `projects/plugins.sbt` file:
 
+```scala
     resolvers += "oose releases" at "http://oose.github.io/m2/releases"
     
     addSbtPlugin("oose" % "sbt-javaapi-gen" % "0.3")
+```
 
 In your `build.sbt` file or any other `.sbt` file define a set of java classes (not source) which will be inspected by the plugin. For example:
 
+```scala
     def wrapInPackage(packageName: String)(c: String) = packageName + "." + c
     
     javaApiClasses ++=  Set(
@@ -31,6 +34,7 @@ In your `build.sbt` file or any other `.sbt` file define a set of java classes (
       "RepositoryService",
       "RuntimeService",
       "TaskService") map wrapInPackage("org.activiti.engine")
+```
 
 The sbt setting `javaApiClasses` expects a set of strings of fully qualified java classes. The function `wrapInPackage` is just a convenience if you have many classes from the same package.
 
@@ -56,6 +60,7 @@ The return types of getters are always inferred, so that no type mismatch can ha
 
 For example this a an sample output (abbreviated):
 
+```scala
     implicit class ScalaTask(val java : Task) {
       def name = java.getName()
       def priority_=(arg0 : Int) = java.setPriority(arg0)
@@ -83,6 +88,7 @@ For example this a an sample output (abbreviated):
       def isSuspended = java.isSuspended()
       def taskLocalVariables = java.getTaskLocalVariables()
     }
+```
 
 The plugin will also take care of required imports.
 
